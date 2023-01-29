@@ -35,7 +35,7 @@ func (g *steamGame) playtimeWindows() int {
 }
 
 func (g *steamGame) writeMetric(w io.Writer, platform string, amount int, steamid string) {
-	w.Write([]byte("steam_game_playtime{appid=\"" + strconv.Itoa(g.AppID) + "\", platform=\"" + platform + "\", steamid=\"" + steamid + "\", name=\"" + strings.ReplaceAll(g.Name, "\"", "'") + "\"} " + strconv.Itoa(amount) + "\n"))
+	w.Write([]byte("steam_game_playtime{appid=\"" + strconv.Itoa(g.AppID) + "\", platform=\"" + platform + "\", steamid=\"" + steamid + "\", game=\"" + strings.ReplaceAll(g.Name, "\"", "'") + "\"} " + strconv.Itoa(amount) + "\n"))
 }
 
 func main() {
