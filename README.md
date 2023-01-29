@@ -3,7 +3,7 @@
 steamprom is a go microservice that exposes your Steam game playtime via
 Prometheus metrics.
 
-This service runs at https://steamprom.apps.notk.ai/.
+This service runs at https://steamprom.app.notk.ai/.
 
 ## API
 
