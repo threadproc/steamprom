@@ -33,11 +33,8 @@ func (g *steamGame) playtimeWindows() int {
 	return g.PlaytimeForever - g.PlaytimeLinux - g.PlaytimeMac
 }
 
-func (g *steamGame) writeMetric(w io.Writer, platform string, amount int) {
-	if amount == 0 {
-		return
-	}
-	w.Write([]byte("steam_game_playtime{appid=\"" + strconv.Itoa(g.AppID) + "\", platform=\"" + platform + "\"} " + strconv.Itoa(amount) + "\n"))
+func (g *steamGame) writeMetric(w io.Writer, platform string, amount int, steamid string) {
+	w.Write([]byte("steam_game_playtime{appid=\"" + strconv.Itoa(g.AppID) + "\", platform=\"" + platform + "\", steamid=\"" + steamid + "\"} " + strconv.Itoa(amount) + "\n"))
 }
 
 func main() {
@@ -96,15 +93,13 @@ func main() {
 		})
 
 		for _, game := range stResp.Response.Games {
-			if game.PlaytimeForever > 0 {
-				w.Write([]byte("# " + game.Name + "\n"))
+			w.Write([]byte("# " + game.Name + "\n"))
 
-				game.writeMetric(w, "windows", game.playtimeWindows())
-				game.writeMetric(w, "mac", game.PlaytimeMac)
-				game.writeMetric(w, "linux", game.PlaytimeLinux)
+			game.writeMetric(w, "windows", game.playtimeWindows(), steamID)
+			game.writeMetric(w, "mac", game.PlaytimeMac, steamID)
+			game.writeMetric(w, "linux", game.PlaytimeLinux, steamID)
 
-				w.Write([]byte("\n"))
-			}
+			w.Write([]byte("\n"))
 		}
 	})
 
